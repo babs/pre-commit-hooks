@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "check-argocd-yaml"
+dynamic = ["version", "dependencies"]
+authors = [{ name = "Damien Degois", email = "damien@degois.info" }]
+description = "Pre-commit hook to check ArgoCD manifest structures"
+classifiers = [
+  "Topic :: Software Development :: Quality Assurance",
+  "Programming Language :: Python :: 3 :: Only"
+  ]
+
+[project.urls]
+homepage = "https://github.com/babs/check-argocd-yaml"
+
+[project.scripts]
+check-argocd-app = "check_argocd_app:main"
+
+[tool.setuptools]
+package-dir = { "" = "hooks" }
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+dependencies = {file = ["requirements.txt"]}
+#optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+
+[tool.pytest.ini_options]
+addopts = "--cov=check-argocd-yaml"
+testpaths = ["tests"]
+
+[tool.mypy]
+mypy_path = "hooks"
+check_untyped_defs = true
+disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true

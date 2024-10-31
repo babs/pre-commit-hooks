@@ -1,0 +1,7 @@
+// Intentionnal commit due to auto toc generation of vs code markdown extension
+{
+    "markdown.extension.toc.omittedFromToc": {
+        "README.md": []
+    },
+    "markdown.extension.toc.levels": "2..6",
+}

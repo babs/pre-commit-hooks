@@ -1,0 +1,7 @@
+- id: check-argocd-app
+  name: check app manifest for definition order
+  description: to ease readability and maintainability of the manifest keys can be ordered in a specific way
+  entry: check-argocd-app
+  language: python
+  types: [yaml]
+  stages: [pre-commit, pre-push, manual]
