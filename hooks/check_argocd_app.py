@@ -55,6 +55,10 @@ def check_file(filename: str, yaml: ruamel.yaml.YAML, args: argparse.Namespace) 
         print(exc)
         return False
 
+    if not isinstance(manifest, dict):
+        print(f"Warning: YAML manifest not parsed as dict/map ({type(manifest)}) [SKIP]")
+        return True
+
     if manifest.get("kind") != "Application":
         if args.verbose:
             print(f"{filename}: is not an ArgoCD Application manifest [SKIP]")
@@ -64,7 +68,7 @@ def check_file(filename: str, yaml: ruamel.yaml.YAML, args: argparse.Namespace) 
             print(f"{filename}: api version not handled [SKIP]")
         return True
     retval = True
-    spec_keys = list(manifest.get("spec").keys())
+    spec_keys = list(manifest.get("spec", {}).keys())
     if spec_keys[-1] not in ["source", "sources"]:
         print(f"{filename}: source is not the last key in spec")
         retval = False
@@ -107,8 +111,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     retval = 0
     yaml = ruamel.yaml.YAML()  # type: ignore
     for filename in args.filenames:
-        if not check_file(filename, yaml, args):
-            retval = 1
+        try:
+            if not check_file(filename, yaml, args):
+                retval = 1
+        except Exception as e:
+            print(f"error parsing {filename}")
+            raise e
     return retval
 
 
